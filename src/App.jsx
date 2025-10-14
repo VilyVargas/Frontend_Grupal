@@ -1,13 +1,37 @@
-import React from 'react';
 
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+//Importar componente Encabezado.
+import Encabezado from "./components/navegacion/Encabezado";
+
+//Importar las vistas.
+import Login from "./views/Login";
+import Inicio from "./views/Inicio";
+import Productos from "./views/Productos";
+import Ventas from "./views/Ventas";
+import Compras from "./views/Compras";
+import Clientes from "./views/Clientes";
+
+//Importar archivo de estilos.
+import "./App.css";
 
 const App = () => {
   return (
-    <>
-    <h1>MotoRepuestos Aleman</h1>
-    </>
+    <Router>
+      <Encabezado />
+      <main className="margen-superior-main">
+        <Routes>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/productos" element={<Productos />} />
+          <Route path="/ventas" element={<Ventas />} />
+          <Route path="/compras" element={<Compras />} />
+          <Route path="/clientes" element={<Clientes />} />
+          <Route path="*" element={<h2>404 - Pagina no encontrada</h2>} />
+        </Routes>
+      </main>
+    </Router>
   )
 }
 
 export default App;
-
