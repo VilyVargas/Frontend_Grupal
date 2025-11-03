@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import TablaVentas from "../components/ventas/TablaVentas";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
-import TablaVentas from "../components/ventas/TablaVentas";
+
 
 
 
@@ -39,7 +39,7 @@ const Ventas = () => {
                 ventas.Fecha_Venta.toLowerCase().includes(texto) ||
                 ventas.ID_Cliente.toLowerCase().includes(texto)
                 );
-        setclientesFiltrados(filtrados);
+        setventasFiltrados(filtrados);
     };
 
     useEffect(() => {
