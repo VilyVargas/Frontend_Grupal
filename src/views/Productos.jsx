@@ -93,7 +93,7 @@ const Productos = () => {
       const respuesta = await fetch(
         `http://localhost:3000/api/actualizarproducto/${productoEditado.ID_Producto}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(productoEditado),
         }
