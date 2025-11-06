@@ -1,16 +1,21 @@
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
 
-const ModalRegistroClientes = ({
-  mostrarModal,
-  setMostrarModal,
-  nuevoCliente,
-  manejarCambioInput,
-  agregarCliente,
+const ModalEdicionCliente = ({
+  mostrar,
+  setMostrar,
+  clienteEditado,
+  setClienteEditado,
+  guardarEdicion,
 }) => {
+  const manejarCambio = (e) => {
+    const { name, value } = e.target;
+    setClienteEditado((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
-    <Modal backdrop="static" show={mostrarModal} onHide={() => setMostrarModal(false)} centered>
+    <Modal backdrop="static" show={mostrar} onHide={() => setMostrar(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Agregar Nuevo Cliente</Modal.Title>
+        <Modal.Title>Editar Cliente</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -21,11 +26,9 @@ const ModalRegistroClientes = ({
                 <Form.Control
                   type="text"
                   name="Nombre1"
-                  value={nuevoCliente.Nombre1}
-                  onChange={manejarCambioInput}
-                  maxLength={35}
+                  value={clienteEditado?.Nombre1 || ""}
+                  onChange={manejarCambio}
                   required
-                  autoFocus
                 />
               </Form.Group>
             </Col>
@@ -35,9 +38,8 @@ const ModalRegistroClientes = ({
                 <Form.Control
                   type="text"
                   name="Nombre2"
-                  value={nuevoCliente.Nombre2}
-                  onChange={manejarCambioInput}
-                  maxLength={35}
+                  value={clienteEditado?.Nombre2 || ""}
+                  onChange={manejarCambio}
                 />
               </Form.Group>
             </Col>
@@ -50,9 +52,8 @@ const ModalRegistroClientes = ({
                 <Form.Control
                   type="text"
                   name="Apellidos1"
-                  value={nuevoCliente.Apellidos1}
-                  onChange={manejarCambioInput}
-                  maxLength={35}
+                  value={clienteEditado?.Apellidos1 || ""}
+                  onChange={manejarCambio}
                   required
                 />
               </Form.Group>
@@ -63,9 +64,8 @@ const ModalRegistroClientes = ({
                 <Form.Control
                   type="text"
                   name="Apellidos2"
-                  value={nuevoCliente.Apellidos2}
-                  onChange={manejarCambioInput}
-                  maxLength={35}
+                  value={clienteEditado?.Apellidos2 || ""}
+                  onChange={manejarCambio}
                 />
               </Form.Group>
             </Col>
@@ -78,10 +78,8 @@ const ModalRegistroClientes = ({
                 <Form.Control
                   type="text"
                   name="Cedula"
-                  value={nuevoCliente.Cedula}
-                  onChange={manejarCambioInput}
-                  maxLength={18}
-                  placeholder="000-000000-0000X"
+                  value={clienteEditado?.Cedula || ""}
+                  onChange={manejarCambio}
                 />
               </Form.Group>
             </Col>
@@ -91,10 +89,8 @@ const ModalRegistroClientes = ({
                 <Form.Control
                   type="text"
                   name="Telefono"
-                  value={nuevoCliente.Telefono}
-                  onChange={manejarCambioInput}
-                  maxLength={12}
-                  placeholder="8888-8888"
+                  value={clienteEditado?.Telefono || ""}
+                  onChange={manejarCambio}
                 />
               </Form.Group>
             </Col>
@@ -102,19 +98,19 @@ const ModalRegistroClientes = ({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setMostrarModal(false)}>
+        <Button variant="secondary" onClick={() => setMostrar(false)}>
           Cancelar
         </Button>
         <Button
           variant="primary"
-          onClick={agregarCliente}
-          disabled={!nuevoCliente.Nombre1.trim() || !nuevoCliente.Apellidos1.trim()}
+          onClick={guardarEdicion}
+          disabled={!clienteEditado?.Nombre1?.trim() || !clienteEditado?.Apellidos1?.trim()}
         >
-          Guardar Cliente
+          Guardar Cambios
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default ModalRegistroClientes;
+export default ModalEdicionCliente;

@@ -60,7 +60,7 @@ const Productos = () => {
         Nombre_P: "",
         Descripcion: "",
         Cantidad: 0,
-        Disponible: true,
+        Disponible: false,
         PrecioCompra: "",
         PrecioVenta: "",
       });
