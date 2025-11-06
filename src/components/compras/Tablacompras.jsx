@@ -1,5 +1,6 @@
 import { Table, Spinner } from "react-bootstrap";
 
+
 const TablaCompras = ({ compras, cargando }) => {
 
   if (cargando) {

@@ -1,16 +1,24 @@
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
 
-const ModalRegistroProducto = ({
-  mostrarModal,
-  setMostrarModal,
-  nuevoProducto,
-  manejarCambioInput,
-  agregarProducto,
+const ModalEdicionProducto = ({
+  mostrar,
+  setMostrar,
+  productoEditado,
+  setProductoEditado,
+  guardarEdicion,
 }) => {
+  const manejarCambio = (e) => {
+    const { name, value, type, checked } = e.target;
+    setProductoEditado((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
   return (
-    <Modal backdrop="static" show={mostrarModal} onHide={() => setMostrarModal(false)} centered>
+    <Modal backdrop="static" show={mostrar} onHide={() => setMostrar(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Agregar Nuevo Producto</Modal.Title>
+        <Modal.Title>Editar Producto</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -21,9 +29,8 @@ const ModalRegistroProducto = ({
                 <Form.Control
                   type="text"
                   name="Nombre_P"
-                  value={nuevoProducto.Nombre_P}
-                  onChange={manejarCambioInput}
-                  maxLength={100}
+                  value={productoEditado?.Nombre_P || ""}
+                  onChange={manejarCambio}
                   required
                 />
               </Form.Group>
@@ -34,9 +41,8 @@ const ModalRegistroProducto = ({
                 <Form.Control
                   type="number"
                   name="Cantidad"
-                  value={nuevoProducto.Cantidad}
-                  onChange={manejarCambioInput}
-                  min="0"
+                  value={productoEditado?.Cantidad || 0}
+                  onChange={manejarCambio}
                 />
               </Form.Group>
             </Col>
@@ -47,10 +53,9 @@ const ModalRegistroProducto = ({
             <Form.Control
               as="textarea"
               name="Descripcion"
-              value={nuevoProducto.Descripcion}
-              onChange={manejarCambioInput}
+              value={productoEditado?.Descripcion || ""}
+              onChange={manejarCambio}
               rows={2}
-              maxLength={200}
             />
           </Form.Group>
 
@@ -62,8 +67,8 @@ const ModalRegistroProducto = ({
                   type="number"
                   step="0.01"
                   name="PrecioCompra"
-                  value={nuevoProducto.PrecioCompra}
-                  onChange={manejarCambioInput}
+                  value={productoEditado?.PrecioCompra || ""}
+                  onChange={manejarCambio}
                 />
               </Form.Group>
             </Col>
@@ -74,8 +79,8 @@ const ModalRegistroProducto = ({
                   type="number"
                   step="0.01"
                   name="PrecioVenta"
-                  value={nuevoProducto.PrecioVenta}
-                  onChange={manejarCambioInput}
+                  value={productoEditado?.PrecioVenta || ""}
+                  onChange={manejarCambio}
                 />
               </Form.Group>
             </Col>
@@ -86,26 +91,26 @@ const ModalRegistroProducto = ({
               type="checkbox"
               label="Disponible para la venta"
               name="Disponible"
-              checked={nuevoProducto.Disponible}
-              onChange={manejarCambioInput}
+              checked={!!productoEditado?.Disponible}
+              onChange={manejarCambio}
             />
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setMostrarModal(false)}>
+        <Button variant="secondary" onClick={() => setMostrar(false)}>
           Cancelar
         </Button>
         <Button
           variant="primary"
-          onClick={agregarProducto}
-          disabled={!nuevoProducto.Nombre_P.trim()}
+          onClick={guardarEdicion}
+          disabled={!productoEditado?.Nombre_P?.trim()}
         >
-          Guardar Producto
+          Guardar Cambios
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default ModalRegistroProducto;
+export default ModalEdicionProducto;

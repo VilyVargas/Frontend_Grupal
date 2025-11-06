@@ -20,19 +20,18 @@ const TablaVentas = ({ ventas, cargando }) => {
             <th>ID</th>
             <th>ID_Venta</th>
             <th>Fecha_Venta</th>
-              <th>ID_Cliente</th>
-          <th>Acciones</th>
+            <th>ID_Cliente</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {ventas.map((venta) => {
             return (
-                <tr key={cliente.ID_Venta}>
-                  <td>{cliente.ID_Venta}</td>
-                  <td>{cliente.Fecha_Venta}</td>
-                  <td>{cliente.ID_Cliente}</td>
-
-                  <td>Acción</td>
+                <tr key={venta.ID_Venta}>
+                  <td>{venta.ID_Venta}</td>
+                  <td>{venta.Fecha_Venta}</td>
+                  <td>{venta.ID_Cliente}</td>
+                  <td>Acciones</td>
                 </tr>
             );
           })}

@@ -1,5 +1,7 @@
 import TablaProveedores  from "../components/proveedores/TablaProveedores";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
+import { useState, useEffect } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 
 

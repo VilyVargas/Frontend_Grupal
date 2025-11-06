@@ -42,4 +42,4 @@ const TablaProveedores = ({ proveedores, cargando }) => {
   );
 }
 
-export default <TablaProveedores></TablaProveedores>;
+export default TablaProveedores;

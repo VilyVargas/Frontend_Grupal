@@ -22,7 +22,7 @@ const Ventas = () => {
             }
             const datos = await respuesta.json();
             setVentas(datos);
-            setVentasFiltrados(datos);
+            setventasFiltrados(datos);
             setCargando(false);
         } catch (error) {
             console.long(error.message);
