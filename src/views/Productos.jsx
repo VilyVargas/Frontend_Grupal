@@ -18,13 +18,14 @@ const Productos = () => {
   const [paginaActual, establecerPaginaActual] = useState(1);
   const elementosPorPagina = 5;
 
+  // 🟩 Estado correcto con los mismos nombres que la BD
   const [nuevoProducto, setNuevoProducto] = useState({
     Nombre_P: "",
     Descripcion: "",
     Cantidad: 0,
-    Disponible: true,
     PrecioCompra: "",
     PrecioVenta: "",
+    Disponible: true,
   });
 
   const manejarCambioInput = (e) => {
@@ -35,6 +36,7 @@ const Productos = () => {
     }));
   };
 
+  // 🟩 Obtener todos los productos
   const obtenerProductos = async () => {
     try {
       const respuesta = await fetch("http://localhost:3000/api/productos");
@@ -47,41 +49,71 @@ const Productos = () => {
     }
   };
 
+  // 🟩 Agregar nuevo producto
   const agregarProducto = async () => {
-    if (!nuevoProducto.Nombre_P.trim()) return;
+    if (!nuevoProducto.Nombre_P.trim()) return alert("El nombre es obligatorio");
+
     try {
       const respuesta = await fetch("http://localhost:3000/api/registrarproducto", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevoProducto),
+        body: JSON.stringify({
+          Nombre_P: nuevoProducto.Nombre_P,
+          Descripcion: nuevoProducto.Descripcion,
+          Cantidad: nuevoProducto.Cantidad,
+          PrecioCompra: nuevoProducto.PrecioCompra,
+          PrecioVenta: nuevoProducto.PrecioVenta,
+          Disponible: nuevoProducto.Disponible,
+        }),
       });
+
       if (!respuesta.ok) throw new Error("Error al guardar producto");
+
+      // Limpia los campos y actualiza la tabla
       setNuevoProducto({
         Nombre_P: "",
         Descripcion: "",
         Cantidad: 0,
-        Disponible: true,
         PrecioCompra: "",
         PrecioVenta: "",
+        Disponible: true,
       });
+
       setMostrarModal(false);
       await obtenerProductos();
     } catch (error) {
       console.error("Error al agregar producto:", error);
-      alert("No se pudo guardar el producto.");
+      alert("❌ No se pudo guardar el producto.");
     }
   };
 
-  const manejarCambioBusqueda = (e) => {
-    const texto = e.target.value.toLowerCase();
-    setTextoBusqueda(texto);
-    const filtrados = productos.filter(
-      (prod) =>
-        prod.Nombre_P.toLowerCase().includes(texto) ||
-        prod.Descripcion?.toLowerCase().includes(texto)
-    );
+// 🔍 Actualiza solo el texto de búsqueda
+const manejarCambioBusqueda = (e) => {
+  setTextoBusqueda(e.target.value.toLowerCase());
+};
+
+// 🧠 Este efecto aplica el filtro automáticamente cada vez que cambia la búsqueda o la lista
+useEffect(() => {
+  const texto = textoBusqueda.trim().toLowerCase();
+
+  if (texto === "") {
+    // Si no hay texto, muestra todos los productos
+    setProductosFiltrados(productos);
+  } else {
+    // Si hay texto, filtra todos los campos relevantes
+    const filtrados = productos.filter((prod) => {
+      return (
+        prod.Nombre_P?.toLowerCase().includes(texto) ||
+        prod.Descripcion?.toLowerCase().includes(texto) ||
+        prod.Cantidad?.toString().includes(texto) ||
+        prod.PrecioCompra?.toString().includes(texto) ||
+        prod.PrecioVenta?.toString().includes(texto)
+      );
+    });
     setProductosFiltrados(filtrados);
-  };
+  }
+}, [textoBusqueda, productos]);
+
 
   const abrirModalEdicion = (producto) => {
     setProductoEditado({ ...producto });
