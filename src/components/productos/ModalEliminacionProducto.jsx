@@ -10,7 +10,7 @@ const ModalEliminacionProducto = ({
 
   const manejarConfirmacion = () => {
     confirmarEliminacion();
-    setMostrar(false); // Cierra el modal automáticamente al confirmar
+    setMostrar(false);
   };
 
   return (

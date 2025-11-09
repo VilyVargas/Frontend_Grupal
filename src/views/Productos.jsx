@@ -18,7 +18,7 @@ const Productos = () => {
   const [paginaActual, establecerPaginaActual] = useState(1);
   const elementosPorPagina = 5;
 
-  // 🟩 Estado correcto con los mismos nombres que la BD
+ 
   const [nuevoProducto, setNuevoProducto] = useState({
     Nombre_P: "",
     Descripcion: "",
@@ -28,6 +28,7 @@ const Productos = () => {
     Disponible: true,
   });
 
+
   const manejarCambioInput = (e) => {
     const { name, value, type, checked } = e.target;
     setNuevoProducto((prev) => ({
@@ -36,7 +37,7 @@ const Productos = () => {
     }));
   };
 
-  // 🟩 Obtener todos los productos
+
   const obtenerProductos = async () => {
     try {
       const respuesta = await fetch("http://localhost:3000/api/productos");
@@ -49,7 +50,6 @@ const Productos = () => {
     }
   };
 
-  // 🟩 Agregar nuevo producto
   const agregarProducto = async () => {
     if (!nuevoProducto.Nombre_P.trim()) return alert("El nombre es obligatorio");
 
@@ -69,15 +69,11 @@ const Productos = () => {
 
       if (!respuesta.ok) throw new Error("Error al guardar producto");
 
-      // Limpia los campos y actualiza la tabla
+ 
       setNuevoProducto({
         Nombre_P: "",
         Descripcion: "",
         Cantidad: 0,
-<<<<<<< HEAD
-=======
-        Disponible: false,
->>>>>>> c8eabad0f5afb416e69e8f51c850c4c79199c727
         PrecioCompra: "",
         PrecioVenta: "",
         Disponible: true,
@@ -91,38 +87,36 @@ const Productos = () => {
     }
   };
 
-// 🔍 Actualiza solo el texto de búsqueda
-const manejarCambioBusqueda = (e) => {
-  setTextoBusqueda(e.target.value.toLowerCase());
-};
+  const manejarCambioBusqueda = (e) => {
+    setTextoBusqueda(e.target.value.toLowerCase());
+  };
 
-// 🧠 Este efecto aplica el filtro automáticamente cada vez que cambia la búsqueda o la lista
-useEffect(() => {
-  const texto = textoBusqueda.trim().toLowerCase();
+  
+  useEffect(() => {
+    const texto = textoBusqueda.trim().toLowerCase();
 
-  if (texto === "") {
-    // Si no hay texto, muestra todos los productos
-    setProductosFiltrados(productos);
-  } else {
-    // Si hay texto, filtra todos los campos relevantes
-    const filtrados = productos.filter((prod) => {
-      return (
-        prod.Nombre_P?.toLowerCase().includes(texto) ||
-        prod.Descripcion?.toLowerCase().includes(texto) ||
-        prod.Cantidad?.toString().includes(texto) ||
-        prod.PrecioCompra?.toString().includes(texto) ||
-        prod.PrecioVenta?.toString().includes(texto)
-      );
-    });
-    setProductosFiltrados(filtrados);
-  }
-}, [textoBusqueda, productos]);
+    if (texto === "") {
+      setProductosFiltrados(productos);
+    } else {
+      const filtrados = productos.filter((prod) => {
+        return (
+          prod.Nombre_P?.toLowerCase().includes(texto) ||
+          prod.Descripcion?.toLowerCase().includes(texto) ||
+          prod.Cantidad?.toString().includes(texto) ||
+          prod.PrecioCompra?.toString().includes(texto) ||
+          prod.PrecioVenta?.toString().includes(texto)
+        );
+      });
+      setProductosFiltrados(filtrados);
+    }
+  }, [textoBusqueda, productos]);
 
 
   const abrirModalEdicion = (producto) => {
     setProductoEditado({ ...producto });
     setMostrarModalEdicion(true);
   };
+
 
   const guardarEdicion = async () => {
     try {
@@ -143,11 +137,13 @@ useEffect(() => {
     }
   };
 
+
   const abrirModalEliminacion = (producto) => {
     setProductoAEliminar(producto);
     setMostrarModalEliminar(true);
   };
 
+ 
   const confirmarEliminacion = async () => {
     try {
       const respuesta = await fetch(
@@ -163,9 +159,11 @@ useEffect(() => {
     }
   };
 
+ 
   useEffect(() => {
     obtenerProductos();
   }, []);
+
 
   const productosPaginados = productosFiltrados.slice(
     (paginaActual - 1) * elementosPorPagina,
