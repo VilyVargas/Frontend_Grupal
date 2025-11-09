@@ -74,6 +74,10 @@ const Productos = () => {
         Nombre_P: "",
         Descripcion: "",
         Cantidad: 0,
+<<<<<<< HEAD
+=======
+        Disponible: false,
+>>>>>>> c8eabad0f5afb416e69e8f51c850c4c79199c727
         PrecioCompra: "",
         PrecioVenta: "",
         Disponible: true,
