@@ -29,7 +29,7 @@ const Clientes = () => {
 
   const manejarCambioInput = (e) => {
     const { name, value } = e.target;
-    setNuevoCliente((prev) => ({ ...prev, [name]: value }));
+    setNuevoCliente((prev) => ({ ...prev, [name]: value } ));
   };
 
   const obtenerClientes = async () => {
@@ -44,30 +44,30 @@ const Clientes = () => {
     }
   };
 
-  const agregarCliente = async () => {
-    if (!nuevoCliente.Nombre1.trim() || !nuevoCliente.Apellidos1.trim()) return;
-    try {
-      const respuesta = await fetch("http://localhost:3000/api/registrarcliente", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevoCliente),
-      });
-      if (!respuesta.ok) throw new Error("Error al guardar cliente");
-      setNuevoCliente({
-        Nombre1: "",
-        Nombre2: "",
-        Apellidos1: "",
-        Apellidos2: "",
-        Cedula: "",
-        Telefono: "",
-      });
-      setMostrarModal(false);
-      await obtenerClientes();
-    } catch (error) {
-      console.error("Error al agregar cliente:", error);
-      alert("No se pudo guardar el cliente.");
-    }
-  };
+const agregarCliente = async () => {
+  if (!nuevoCliente.Nombre1.trim() || !nuevoCliente.Apellidos1.trim()) return;
+  try {
+    const respuesta = await fetch("http://localhost:3000/api/registrarCliente", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nuevoCliente),
+    });
+    if (!respuesta.ok) throw new Error("Error al guardar cliente");
+    setNuevoCliente({
+      Nombre1: "",
+      Nombre2: "",
+      Apellidos1: "",
+      Apellidos2: "",
+      Cedula: "",
+      Telefono: "",
+    });
+    setMostrarModal(false);
+    await obtenerClientes();
+  } catch (error) {
+    console.error("Error al agregar cliente:", error);
+    alert("No se pudo guardar el cliente.");
+  }
+};
 
   const manejarCambioBusqueda = (e) => {
     const texto = e.target.value.toLowerCase();
@@ -88,44 +88,44 @@ const Clientes = () => {
     setMostrarModalEdicion(true);
   };
 
-  const guardarEdicion = async () => {
-    try {
-      const respuesta = await fetch(
-        `http://localhost:3000/api/actualizarcliente/${clienteEditado.ID_Cliente}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(clienteEditado),
-        }
-      );
-      if (!respuesta.ok) throw new Error("Error al actualizar");
-      setMostrarModalEdicion(false);
-      await obtenerClientes();
-    } catch (error) {
-      console.error("Error al editar cliente:", error);
-      alert("No se pudo actualizar el cliente.");
-    }
-  };
+const guardarEdicion = async () => {
+  try {
+    const respuesta = await fetch(
+      `http://localhost:3000/api/actualizarCliente/${clienteEditado.ID_Cliente}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(clienteEditado),
+      }
+    );
+    if (!respuesta.ok) throw new Error("Error al actualizar");
+    setMostrarModalEdicion(false);
+    await obtenerClientes();
+  } catch (error) {
+    console.error("Error al editar cliente:", error);
+    alert("No se pudo actualizar el cliente.");
+  }
+};
 
   const abrirModalEliminacion = (cliente) => {
     setClienteAEliminar(cliente);
     setMostrarModalEliminar(true);
   };
 
-  const confirmarEliminacion = async () => {
-    try {
-      const respuesta = await fetch(
-        `http://localhost:3000/api/eliminarcliente/${clienteAEliminar.ID_Cliente}`,
-        { method: "DELETE" }
-      );
-      if (!respuesta.ok) throw new Error("Error al eliminar");
-      setMostrarModalEliminar(false);
-      await obtenerClientes();
-    } catch (error) {
-      console.error("Error al eliminar cliente:", error);
-      alert("No se pudo eliminar el cliente.");
-    }
-  };
+const confirmarEliminacion = async () => {
+  try {
+    const respuesta = await fetch(
+      `http://localhost:3000/api/eliminarCliente/${clienteAEliminar.ID_Cliente}`,
+      { method: "DELETE" }
+    );
+    if (!respuesta.ok) throw new Error("Error al eliminar");
+    setMostrarModalEliminar(false);
+    await obtenerClientes();
+  } catch (error) {
+    console.error("Error al eliminar cliente:", error);
+    alert("No se pudo eliminar el cliente.");
+  }
+};
 
   useEffect(() => {
     obtenerClientes();
