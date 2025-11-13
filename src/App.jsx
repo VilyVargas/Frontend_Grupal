@@ -1,5 +1,4 @@
 
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 //Importar componente Encabezado.
 import Encabezado from "./components/navegacion/Encabezado";
@@ -13,6 +12,7 @@ import Ventas from "./views/Ventas";
 import Compras from "./views/Compras";
 import Clientes from "./views/Clientes";
 import Catalago from "./views/Catalogo";
+import Empleados from "./views/Empleados";
 
 //Importar archivo de estilos.
 import "./App.css";
@@ -31,6 +31,7 @@ const App = () => {
           <Route path="/proveedores" element={<Proveedores />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/catalogo" element={<Catalago />} />
+          <Route path="/empleados" element={<Empleados />} />
           <Route path="*" element={<h2>404 - Pagina no encontrada</h2>} />
         </Routes>
       </main>
