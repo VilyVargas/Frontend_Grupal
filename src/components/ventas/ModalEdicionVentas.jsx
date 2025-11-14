@@ -1,11 +1,11 @@
 import { Modal, Form, Button } from "react-bootstrap";
 
-const ModalRegistroVentas = ({
+const ModalEdicionVentas = ({
   mostrarModal,
   setMostrarModal,
-  nuevaVenta,
+  ventaSeleccionada,
   manejarCambioInput,
-  registrarVenta,
+  guardarCambiosVenta,
 }) => {
   return (
     <Modal
@@ -15,7 +15,7 @@ const ModalRegistroVentas = ({
       backdrop="static"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Registrar Venta</Modal.Title>
+        <Modal.Title>Editar Venta</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -25,41 +25,28 @@ const ModalRegistroVentas = ({
             <Form.Control
               type="date"
               name="Fecha"
-              value={nuevaVenta.Fecha || ""}
+              value={ventaSeleccionada?.Fecha || ""}
               onChange={manejarCambioInput}
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>ID Cliente</Form.Label>
+            <Form.Label>Cliente</Form.Label>
             <Form.Control
-              type="number"
-              name="ID_Cliente"
-              value={nuevaVenta.ID_Cliente || ""}
+              type="text"
+              name="Cliente"
+              value={ventaSeleccionada?.Cliente || ""}
               onChange={manejarCambioInput}
-              placeholder="Ingrese el ID del cliente"
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>ID Empleado</Form.Label>
-            <Form.Control
-              type="number"
-              name="ID_Empleado"
-              value={nuevaVenta.ID_Empleado || ""}
-              onChange={manejarCambioInput}
-              placeholder="Ingrese el ID del empleado"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Total Venta</Form.Label>
+            <Form.Label>Total</Form.Label>
             <Form.Control
               type="number"
               name="Total"
-              value={nuevaVenta.Total || ""}
+              value={ventaSeleccionada?.Total || ""}
               onChange={manejarCambioInput}
-              placeholder="Ingrese el total"
             />
           </Form.Group>
         </Form>
@@ -70,12 +57,12 @@ const ModalRegistroVentas = ({
           Cancelar
         </Button>
 
-        <Button variant="success" onClick={registrarVenta}>
-          Registrar Venta
+        <Button variant="primary" onClick={guardarCambiosVenta}>
+          Guardar Cambios
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default ModalRegistroVentas;
+export default ModalEdicionVentas;
