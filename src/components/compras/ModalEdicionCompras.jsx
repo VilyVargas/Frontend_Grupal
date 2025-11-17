@@ -1,19 +1,21 @@
 import { Modal, Button, Form } from "react-bootstrap";
 
-const ModalRegistroCompras = ({
+const ModalEdicionCompras = ({
   mostrarModal,
   setMostrarModal,
-  nuevaCompra,
+  compraSeleccionada,
   manejarCambioInput,
-  agregarCompra,
-  modoEdicion,
+  guardarCambiosCompra,
 }) => {
   return (
-    <Modal show={mostrarModal} onHide={() => setMostrarModal(false)} centered>
+    <Modal
+      show={mostrarModal}
+      onHide={() => setMostrarModal(false)}
+      centered
+      backdrop="static"
+    >
       <Modal.Header closeButton>
-        <Modal.Title>
-          {modoEdicion ? "Editar Compra" : "Registrar Compra"}
-        </Modal.Title>
+        <Modal.Title>Editar compra</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -23,9 +25,10 @@ const ModalRegistroCompras = ({
             <Form.Control
               type="text"
               name="Producto"
-              value={nuevaCompra.Producto}
+              value={compraSeleccionada?.Producto || ""}
               onChange={manejarCambioInput}
-              placeholder="Ej: Aceite Motul"
+              placeholder="Ingrese el nombre del producto"
+              required
             />
           </Form.Group>
 
@@ -34,9 +37,10 @@ const ModalRegistroCompras = ({
             <Form.Control
               type="number"
               name="Cantidad"
-              value={nuevaCompra.Cantidad}
+              value={compraSeleccionada?.Cantidad || ""}
               onChange={manejarCambioInput}
-              placeholder="Ej: 10"
+              placeholder="Ingrese la cantidad"
+              required
             />
           </Form.Group>
 
@@ -45,9 +49,10 @@ const ModalRegistroCompras = ({
             <Form.Control
               type="number"
               name="Precio"
-              value={nuevaCompra.Precio}
+              value={compraSeleccionada?.Precio || ""}
               onChange={manejarCambioInput}
-              placeholder="Ej: 250"
+              placeholder="Ingrese el precio unidad"
+              required
             />
           </Form.Group>
 
@@ -56,18 +61,19 @@ const ModalRegistroCompras = ({
             <Form.Control
               type="text"
               name="Proveedor"
-              value={nuevaCompra.Proveedor}
+              value={compraSeleccionada?.Proveedor || ""}
               onChange={manejarCambioInput}
-              placeholder="Ej: Repuestos López"
+              placeholder="Ingrese el proveedor"
+              required
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Fecha de Compra</Form.Label>
+            <Form.Label>Fecha de compra</Form.Label>
             <Form.Control
               type="date"
               name="Fecha"
-              value={nuevaCompra.Fecha}
+              value={compraSeleccionada?.Fecha || ""}
               onChange={manejarCambioInput}
             />
           </Form.Group>
@@ -78,15 +84,12 @@ const ModalRegistroCompras = ({
         <Button variant="secondary" onClick={() => setMostrarModal(false)}>
           Cancelar
         </Button>
-        <Button
-          variant={modoEdicion ? "warning" : "success"}
-          onClick={agregarCompra}
-        >
-          {modoEdicion ? "Guardar Cambios" : "Registrar Compra"}
+        <Button className="color-boton-guardar" onClick={guardarCambiosCompra}>
+          <i className="bi bi-save-fill me-1"></i> Guardar cambios
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default ModalRegistroCompras;
+export default ModalEdicionCompras;

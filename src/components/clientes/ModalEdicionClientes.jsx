@@ -94,10 +94,7 @@ const ModalEdicionClientes = ({
         <Button variant="secondary" onClick={() => setMostrarModal(false)}>
           Cancelar
         </Button>
-        <Button
-          className="color-boton-guardar"
-          onClick={guardarCambiosCliente}
-        >
+        <Button className="color-boton-guardar" onClick={guardarCambiosCliente}>
           <i className="bi bi-save-fill me-1"></i> Guardar cambios
         </Button>
       </Modal.Footer>

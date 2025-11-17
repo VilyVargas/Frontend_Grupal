@@ -1,16 +1,16 @@
 import { Modal, Form, Button } from "react-bootstrap";
 
-const ModalRegistroProductos = ({
+const ModalEdicionProductos = ({
   mostrarModal,
   setMostrarModal,
-  nuevoProducto,
+  productoSeleccionado,
   manejarCambioInput,
-  registrarProducto,
+  guardarCambiosProducto,
 }) => {
   return (
     <Modal show={mostrarModal} onHide={() => setMostrarModal(false)} centered backdrop="static">
       <Modal.Header closeButton>
-        <Modal.Title>Registrar Producto</Modal.Title>
+        <Modal.Title>Editar Producto</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -20,9 +20,8 @@ const ModalRegistroProductos = ({
             <Form.Control
               type="text"
               name="Nombre"
-              value={nuevoProducto.Nombre || ""}
+              value={productoSeleccionado?.Nombre || ""}
               onChange={manejarCambioInput}
-              placeholder="Ingrese el nombre del producto"
             />
           </Form.Group>
 
@@ -31,9 +30,8 @@ const ModalRegistroProductos = ({
             <Form.Control
               type="number"
               name="Precio"
-              value={nuevoProducto.Precio || ""}
+              value={productoSeleccionado?.Precio || ""}
               onChange={manejarCambioInput}
-              placeholder="Ingrese el precio"
             />
           </Form.Group>
 
@@ -42,9 +40,8 @@ const ModalRegistroProductos = ({
             <Form.Control
               type="number"
               name="Cantidad"
-              value={nuevoProducto.Cantidad || ""}
+              value={productoSeleccionado?.Cantidad || ""}
               onChange={manejarCambioInput}
-              placeholder="Ingrese la cantidad"
             />
           </Form.Group>
         </Form>
@@ -54,12 +51,12 @@ const ModalRegistroProductos = ({
         <Button variant="secondary" onClick={() => setMostrarModal(false)}>
           Cancelar
         </Button>
-        <Button variant="success" onClick={registrarProducto}>
-          Registrar Producto
+        <Button variant="primary" onClick={guardarCambiosProducto}>
+          Guardar Cambios
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default ModalRegistroProductos;
+export default ModalEdicionProductos;

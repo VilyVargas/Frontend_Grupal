@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import TablaClientes from "../components/clientes/TablaClientes";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
-import ModalEdicionCliente from "../components/clientes/ModalEdicionCliente";
-import ModalEliminacionCliente from "../components/clientes/ModalEliminacionCliente";
+import ModalEdicionCliente from "../components/clientes/ModalEdicionClientes";
+import ModalEliminacionCliente from "../components/clientes/ModalEliminacionClientes";
 import ModalRegistroClientes from "../components/clientes/ModalRegistroClientes";
 
 const Clientes = () => {
