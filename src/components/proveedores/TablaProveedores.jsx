@@ -15,7 +15,7 @@ const TablaProveedores = ({ proveedores = [], cargando }) => {
   });
   const [listaProveedores, setListaProveedores] = useState([]);
 
-  // 🔹 Cargar proveedores iniciales
+  //  Cargar proveedores iniciales
   useEffect(() => {
     setListaProveedores(proveedores);
   }, [proveedores]);
@@ -23,25 +23,25 @@ const TablaProveedores = ({ proveedores = [], cargando }) => {
   const elementosPorPagina = 5;
   const totalPaginas = Math.ceil(listaProveedores.length / elementosPorPagina);
 
-  // 🔹 Cálculo de proveedores visibles
+  //  Cálculo de proveedores visibles
   const inicio = (paginaActual - 1) * elementosPorPagina;
   const fin = inicio + elementosPorPagina;
   const proveedoresVisibles = listaProveedores.slice(inicio, fin);
 
-  // 🔹 Cambio de página
+  //  Cambio de página
   const cambiarPagina = (numero) => {
     if (numero >= 1 && numero <= totalPaginas) {
       setPaginaActual(numero);
     }
   };
 
-  // 🔹 Manejo de inputs del modal
+  //  Manejo de inputs del modal
   const manejarCambioInput = (e) => {
     const { name, value } = e.target;
     setNuevoProveedor((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 🔹 Agregar proveedor
+  //  Agregar proveedor
   const agregarProveedor = () => {
     if (!nuevoProveedor.Nombre_Prov.trim()) {
       Swal.fire("Campo requerido", "Debes ingresar un nombre de proveedor", "warning");
@@ -61,7 +61,7 @@ const TablaProveedores = ({ proveedores = [], cargando }) => {
     Swal.fire("Éxito", "Proveedor agregado correctamente", "success");
   };
 
-  // 🔹 Editar proveedor
+  //  Editar proveedor
   const editarProveedor = (proveedor) => {
     setModoEdicion(true);
     setProveedorEditando(proveedor);
@@ -73,7 +73,7 @@ const TablaProveedores = ({ proveedores = [], cargando }) => {
     setMostrarModal(true);
   };
 
-  // 🔹 Guardar cambios del proveedor editado
+  //  Guardar cambios del proveedor editado
   const guardarEdicion = () => {
     setListaProveedores(
       listaProveedores.map((p) =>
@@ -89,7 +89,7 @@ const TablaProveedores = ({ proveedores = [], cargando }) => {
     Swal.fire("Actualizado", "Proveedor editado correctamente", "success");
   };
 
-  // 🔹 Eliminar proveedor
+  //  Eliminar proveedor
   const eliminarProveedor = (id) => {
     Swal.fire({
       title: "¿Eliminar proveedor?",
@@ -106,7 +106,7 @@ const TablaProveedores = ({ proveedores = [], cargando }) => {
     });
   };
 
-  // 🔹 Spinner de carga
+  //  Spinner de carga
   if (cargando) {
     return (
       <div className="text-center my-4">

@@ -1,5 +1,11 @@
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 //Importar componente Encabezado.
 import Encabezado from "./components/navegacion/Encabezado";
 
@@ -11,32 +17,73 @@ import Proveedores from "./views/Proveedores";
 import Ventas from "./views/Ventas";
 import Compras from "./views/Compras";
 import Clientes from "./views/Clientes";
-import Catalago from "./views/Catalogo";
+import Catalogo from "./views/Catalogo";
 import Empleados from "./views/Empleados";
 
-//Importar archivo de estilos.
 import "./App.css";
 
-const App = () => {
+const AppContent = () => {
+  const location = useLocation();
+  const esLogin = location.pathname === "/login";
+
   return (
-    <Router>
-      <Encabezado />
-      <main className="margen-superior-main">
+    <>
+      {/* Ocultar encabezado en login */}
+      {!esLogin && <Encabezado />}
+
+      <main className={!esLogin ? "margen-superior-main" : ""}>
         <Routes>
-          <Route path="/" element={<Inicio />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/productos" element={<Productos />} />
-          <Route path="/ventas" element={<Ventas />} />
-          <Route path="/compras" element={<Compras />} />
-          <Route path="/proveedores" element={<Proveedores />} />
-          <Route path="/clientes" element={<Clientes />} />
-          <Route path="/catalogo" element={<Catalago />} />
-          <Route path="/empleados" element={<Empleados />} />
-          <Route path="*" element={<h2>404 - Pagina no encontrada</h2>} />
+          {/* Redirigir raíz → login */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+
+          {/* Página principal del login */}
+          <Route path="/login" element={<Login tipo="principal" />} />
+
+          {/* Inicio, solo después del login */}
+          <Route path="/inicio" element={<Inicio />} />
+
+          {/* ENTIDADES: piden login antes de mostrarse */}
+          <Route
+            path="/productos"
+            element={<Login tipo="entidad" entidad={<Productos />} />}
+          />
+          <Route
+            path="/proveedores"
+            element={<Login tipo="entidad" entidad={<Proveedores />} />}
+          />
+          <Route
+            path="/ventas"
+            element={<Login tipo="entidad" entidad={<Ventas />} />}
+          />
+          <Route
+            path="/compras"
+            element={<Login tipo="entidad" entidad={<Compras />} />}
+          />
+          <Route
+            path="/clientes"
+            element={<Login tipo="entidad" entidad={<Clientes />} />}
+          />
+          <Route
+            path="/catalogo"
+            element={<Login tipo="entidad" entidad={<Catalogo />} />}
+          />
+          <Route
+            path="/empleados"
+            element={<Login tipo="entidad" entidad={<Empleados />} />}
+          />
+
+          {/* Error 404 */}
+          <Route path="*" element={<h2>404 - Página no encontrada</h2>} />
         </Routes>
       </main>
-    </Router>
-  )
-}
+    </>
+  );
+};
+
+const App = () => (
+  <Router>
+    <AppContent />
+  </Router>
+);
 
 export default App;

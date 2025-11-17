@@ -1,35 +1,43 @@
 import { Modal, Button } from "react-bootstrap";
 
-const ModalEliminacionCliente = ({
-  mostrar,
-  setMostrar,
-  cliente,
-  confirmarEliminacion,
+const ModalEliminacionClientes = ({
+  mostrarModal,
+  setMostrarModal,
+  clienteSeleccionado,
+  confirmarEliminacionCliente,
 }) => {
   return (
-    <Modal show={mostrar} onHide={() => setMostrar(false)} centered>
+    <Modal
+      show={mostrarModal}
+      onHide={() => setMostrarModal(false)}
+      centered
+      backdrop="static"
+    >
       <Modal.Header closeButton>
-        <Modal.Title>Confirmar Eliminación</Modal.Title>
+        <Modal.Title className="text-danger">Eliminar cliente</Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
         <p>
           ¿Estás seguro de que deseas eliminar al cliente{" "}
           <strong>
-            {cliente?.Nombre1} {cliente?.Apellidos1}
-          </strong>?
+            {clienteSeleccionado?.Nombre1} {clienteSeleccionado?.Apellidos1}
+          </strong>
+          ?
         </p>
-        <p className="text-muted small">Esta acción no se puede deshacer.</p>
+        <p className="text-muted mb-0">Esta acción no se puede deshacer.</p>
       </Modal.Body>
+
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setMostrar(false)}>
+        <Button variant="secondary" onClick={() => setMostrarModal(false)}>
           Cancelar
         </Button>
-        <Button variant="danger" onClick={confirmarEliminacion}>
-          Eliminar
+        <Button variant="danger" onClick={confirmarEliminacionCliente}>
+          <i className="bi bi-trash-fill me-1"></i> Eliminar
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default ModalEliminacionCliente;
+export default ModalEliminacionClientes;

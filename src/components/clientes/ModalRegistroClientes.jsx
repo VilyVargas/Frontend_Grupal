@@ -1,4 +1,4 @@
-import { Modal, Form, Button, Row, Col } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 
 const ModalRegistroClientes = ({
   mostrarModal,
@@ -6,111 +6,95 @@ const ModalRegistroClientes = ({
   nuevoCliente,
   manejarCambioInput,
   agregarCliente,
+  modoEdicion,
 }) => {
   return (
-    <Modal backdrop="static" show={mostrarModal} onHide={() => setMostrarModal(false)} centered>
+    <Modal show={mostrarModal} onHide={() => setMostrarModal(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Agregar Nuevo Cliente</Modal.Title>
+        <Modal.Title>
+          {modoEdicion ? "Editar Cliente" : "Registrar Cliente"}
+        </Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
         <Form>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Nombre1">
-                <Form.Label>Primer Nombre *</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Nombre1"
-                  value={nuevoCliente.Nombre1}
-                  onChange={manejarCambioInput}
-                  maxLength={35}
-                  required
-                  autoFocus
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Nombre2">
-                <Form.Label>Segundo Nombre</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Nombre2"
-                  value={nuevoCliente.Nombre2}
-                  onChange={manejarCambioInput}
-                  maxLength={35}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label>Primer Nombre</Form.Label>
+            <Form.Control
+              type="text"
+              name="Nombre1"
+              value={nuevoCliente.Nombre1}
+              onChange={manejarCambioInput}
+              placeholder="Ej: Juan"
+            />
+          </Form.Group>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Apellidos1">
-                <Form.Label>Primer Apellido *</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Apellidos1"
-                  value={nuevoCliente.Apellidos1}
-                  onChange={manejarCambioInput}
-                  maxLength={35}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Apellidos2">
-                <Form.Label>Segundo Apellido</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Apellidos2"
-                  value={nuevoCliente.Apellidos2}
-                  onChange={manejarCambioInput}
-                  maxLength={35}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label>Segundo Nombre</Form.Label>
+            <Form.Control
+              type="text"
+              name="Nombre2"
+              value={nuevoCliente.Nombre2}
+              onChange={manejarCambioInput}
+              placeholder="Ej: Carlos"
+            />
+          </Form.Group>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Cedula">
-                <Form.Label>Cédula</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Cedula"
-                  value={nuevoCliente.Cedula}
-                  onChange={manejarCambioInput}
-                  maxLength={18}
-                  placeholder="000-000000-0000X"
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Telefono">
-                <Form.Label>Teléfono</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Telefono"
-                  value={nuevoCliente.Telefono}
-                  onChange={manejarCambioInput}
-                  maxLength={12}
-                  placeholder="8888-8888"
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label>Primer Apellido</Form.Label>
+            <Form.Control
+              type="text"
+              name="Apellidos1"
+              value={nuevoCliente.Apellidos1}
+              onChange={manejarCambioInput}
+              placeholder="Ej: López"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Segundo Apellido</Form.Label>
+            <Form.Control
+              type="text"
+              name="Apellidos2"
+              value={nuevoCliente.Apellidos2}
+              onChange={manejarCambioInput}
+              placeholder="Ej: Pérez"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Cédula</Form.Label>
+            <Form.Control
+              type="text"
+              name="Cedula"
+              value={nuevoCliente.Cedula}
+              onChange={manejarCambioInput}
+              placeholder="Ej: 001-123456-7890X"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Teléfono</Form.Label>
+            <Form.Control
+              type="text"
+              name="Telefono"
+              value={nuevoCliente.Telefono}
+              onChange={manejarCambioInput}
+              placeholder="Ej: 8888-8888"
+            />
+          </Form.Group>
         </Form>
       </Modal.Body>
+
       <Modal.Footer>
         <Button variant="secondary" onClick={() => setMostrarModal(false)}>
           Cancelar
         </Button>
         <Button
-          variant="primary"
+          variant={modoEdicion ? "warning" : "success"}
           onClick={agregarCliente}
-          disabled={!nuevoCliente.Nombre1.trim() || !nuevoCliente.Apellidos1.trim()}
         >
-          Guardar Cliente
+          {modoEdicion ? "Guardar Cambios" : "Agregar Cliente"}
         </Button>
       </Modal.Footer>
     </Modal>

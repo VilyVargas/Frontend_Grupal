@@ -1,116 +1,108 @@
-import { Modal, Form, Button, Row, Col } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 
-const ModalEdicionCliente = ({
-  mostrar,
-  setMostrar,
-  clienteEditado,
-  setClienteEditado,
-  guardarEdicion,
+const ModalEdicionClientes = ({
+  mostrarModal,
+  setMostrarModal,
+  clienteSeleccionado,
+  manejarCambioInput,
+  guardarCambiosCliente,
 }) => {
-  const manejarCambio = (e) => {
-    const { name, value } = e.target;
-    setClienteEditado((prev) => ({ ...prev, [name]: value }));
-  };
-
   return (
-    <Modal backdrop="static" show={mostrar} onHide={() => setMostrar(false)} centered>
+    <Modal
+      show={mostrarModal}
+      onHide={() => setMostrarModal(false)}
+      centered
+      backdrop="static"
+    >
       <Modal.Header closeButton>
-        <Modal.Title>Editar Cliente</Modal.Title>
+        <Modal.Title>Editar cliente</Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
         <Form>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Nombre1">
-                <Form.Label>Primer Nombre *</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Nombre1"
-                  value={clienteEditado?.Nombre1 || ""}
-                  onChange={manejarCambio}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Nombre2">
-                <Form.Label>Segundo Nombre</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Nombre2"
-                  value={clienteEditado?.Nombre2 || ""}
-                  onChange={manejarCambio}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label>Primer nombre</Form.Label>
+            <Form.Control
+              type="text"
+              name="Nombre1"
+              value={clienteSeleccionado?.Nombre1 || ""}
+              onChange={manejarCambioInput}
+              placeholder="Ingrese el primer nombre"
+              required
+            />
+          </Form.Group>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Apellidos1">
-                <Form.Label>Primer Apellido *</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Apellidos1"
-                  value={clienteEditado?.Apellidos1 || ""}
-                  onChange={manejarCambio}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Apellidos2">
-                <Form.Label>Segundo Apellido</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Apellidos2"
-                  value={clienteEditado?.Apellidos2 || ""}
-                  onChange={manejarCambio}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label>Segundo nombre</Form.Label>
+            <Form.Control
+              type="text"
+              name="Nombre2"
+              value={clienteSeleccionado?.Nombre2 || ""}
+              onChange={manejarCambioInput}
+              placeholder="Ingrese el segundo nombre (opcional)"
+            />
+          </Form.Group>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Cedula">
-                <Form.Label>Cédula</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Cedula"
-                  value={clienteEditado?.Cedula || ""}
-                  onChange={manejarCambio}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="Telefono">
-                <Form.Label>Teléfono</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Telefono"
-                  value={clienteEditado?.Telefono || ""}
-                  onChange={manejarCambio}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label>Primer apellido</Form.Label>
+            <Form.Control
+              type="text"
+              name="Apellidos1"
+              value={clienteSeleccionado?.Apellidos1 || ""}
+              onChange={manejarCambioInput}
+              placeholder="Ingrese el primer apellido"
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Segundo apellido</Form.Label>
+            <Form.Control
+              type="text"
+              name="Apellidos2"
+              value={clienteSeleccionado?.Apellidos2 || ""}
+              onChange={manejarCambioInput}
+              placeholder="Ingrese el segundo apellido (opcional)"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Cédula</Form.Label>
+            <Form.Control
+              type="text"
+              name="Cedula"
+              value={clienteSeleccionado?.Cedula || ""}
+              onChange={manejarCambioInput}
+              placeholder="Ingrese la cédula del cliente"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Teléfono</Form.Label>
+            <Form.Control
+              type="text"
+              name="Telefono"
+              value={clienteSeleccionado?.Telefono || ""}
+              onChange={manejarCambioInput}
+              placeholder="Ingrese el teléfono del cliente"
+            />
+          </Form.Group>
         </Form>
       </Modal.Body>
+
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setMostrar(false)}>
+        <Button variant="secondary" onClick={() => setMostrarModal(false)}>
           Cancelar
         </Button>
         <Button
-          variant="primary"
-          onClick={guardarEdicion}
-          disabled={!clienteEditado?.Nombre1?.trim() || !clienteEditado?.Apellidos1?.trim()}
+          className="color-boton-guardar"
+          onClick={guardarCambiosCliente}
         >
-          Guardar Cambios
+          <i className="bi bi-save-fill me-1"></i> Guardar cambios
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default ModalEdicionCliente;
+export default ModalEdicionClientes;
