@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { Table, Button, Pagination, Spinner } from "react-bootstrap";
+import { Table, Button, Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
 import ModalRegistroClientes from "./ModalRegistroClientes";
+import BotonOrden from "../ordenamiento/BotonOrden";
+import Paginacion from "../ordenamiento/Paginacion";
 
 const TablaClientes = ({ clientes = [], cargando }) => {
   const [paginaActual, setPaginaActual] = useState(1);
@@ -17,6 +19,7 @@ const TablaClientes = ({ clientes = [], cargando }) => {
     Telefono: "",
   });
   const [listaClientes, setListaClientes] = useState([]);
+  const [orden, setOrden] = useState({ campo: null, direccion: "asc" });
 
   // 🔹 Cargar clientes iniciales
   useEffect(() => {
@@ -27,9 +30,43 @@ const TablaClientes = ({ clientes = [], cargando }) => {
   const totalPaginas = Math.ceil(listaClientes.length / elementosPorPagina);
 
   // 🔹 Clientes visibles según la página
+  // Ordenamiento
+  const ordenarLista = (lista) => {
+    if (!orden.campo) return lista;
+    return [...lista].sort((a, b) => {
+      const va = a[orden.campo];
+      const vb = b[orden.campo];
+
+      if (va == null) return 1;
+      if (vb == null) return -1;
+
+      // Comparar números cuando ambos son numéricos
+      if (!isNaN(Number(va)) && !isNaN(Number(vb))) {
+        return (Number(va) - Number(vb)) * (orden.direccion === "asc" ? 1 : -1);
+      }
+
+      const sa = String(va).toLowerCase();
+      const sb = String(vb).toLowerCase();
+      if (sa < sb) return orden.direccion === "asc" ? -1 : 1;
+      if (sa > sb) return orden.direccion === "asc" ? 1 : -1;
+      return 0;
+    });
+  };
+
+  const listaOrdenada = ordenarLista(listaClientes);
   const inicio = (paginaActual - 1) * elementosPorPagina;
   const fin = inicio + elementosPorPagina;
-  const clientesVisibles = listaClientes.slice(inicio, fin);
+  const clientesVisibles = listaOrdenada.slice(inicio, fin);
+
+  const manejarOrden = (campo) => {
+    setPaginaActual(1);
+    setOrden((prev) => {
+      if (prev.campo === campo) {
+        return { ...prev, direccion: prev.direccion === "asc" ? "desc" : "asc" };
+      }
+      return { campo, direccion: "asc" };
+    });
+  };
 
   // 🔹 Cambio de página
   const cambiarPagina = (numero) => {
@@ -160,12 +197,12 @@ const TablaClientes = ({ clientes = [], cargando }) => {
       <Table striped bordered hover size="sm" responsive className="text-center">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Primer Nombre</th>
+            <BotonOrden campo="ID_Cliente" orden={orden} manejarOrden={manejarOrden}>ID</BotonOrden>
+            <BotonOrden campo="Nombre1" orden={orden} manejarOrden={manejarOrden}>Primer Nombre</BotonOrden>
             <th>Segundo Nombre</th>
-            <th>Primer Apellido</th>
+            <BotonOrden campo="Apellidos1" orden={orden} manejarOrden={manejarOrden}>Primer Apellido</BotonOrden>
             <th>Segundo Apellido</th>
-            <th>Cédula</th>
+            <BotonOrden campo="Cedula" orden={orden} manejarOrden={manejarOrden}>Cédula</BotonOrden>
             <th>Teléfono</th>
             <th>Acciones</th>
           </tr>
@@ -208,36 +245,12 @@ const TablaClientes = ({ clientes = [], cargando }) => {
         </tbody>
       </Table>
 
-      {/* Paginación */}
-      {totalPaginas > 1 && (
-        <Pagination className="justify-content-center mt-3">
-          <Pagination.First
-            onClick={() => cambiarPagina(1)}
-            disabled={paginaActual === 1}
-          />
-          <Pagination.Prev
-            onClick={() => cambiarPagina(paginaActual - 1)}
-            disabled={paginaActual === 1}
-          />
-          {[...Array(totalPaginas)].map((_, i) => (
-            <Pagination.Item
-              key={i + 1}
-              active={paginaActual === i + 1}
-              onClick={() => cambiarPagina(i + 1)}
-            >
-              {i + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            onClick={() => cambiarPagina(paginaActual + 1)}
-            disabled={paginaActual === totalPaginas}
-          />
-          <Pagination.Last
-            onClick={() => cambiarPagina(totalPaginas)}
-            disabled={paginaActual === totalPaginas}
-          />
-        </Pagination>
-      )}
+      <Paginacion
+        elementosPorPagina={elementosPorPagina}
+        totalElementos={listaClientes.length}
+        paginaActual={paginaActual}
+        establecerPaginaActual={setPaginaActual}
+      />
 
       {/* Modal para agregar o editar */}
       <ModalRegistroClientes

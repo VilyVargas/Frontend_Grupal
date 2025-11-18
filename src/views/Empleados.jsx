@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 import TablaEmpleados from "../components/empleados/TablaEmpleados";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 import ModalEdicionEmpleados from "../components/empleados/ModalEdicionEmpleado";
@@ -126,6 +128,11 @@ const Empleados = () => {
             manejarCambioBusqueda={manejarCambioBusqueda}
           />
         </Col>
+        <Col className="d-flex align-items-center">
+          <Button variant="outline-primary" onClick={generarPDFEmpleados}>
+            Exportar PDF
+          </Button>
+        </Col>
       </Row>
 
       <TablaEmpleados
@@ -154,5 +161,34 @@ const Empleados = () => {
     </Container>
   );
 };
+
+  const generarPDFEmpleados = () => {
+    const doc = new jsPDF();
+    doc.setFillColor(28, 41, 51);
+    doc.rect(0, 0, doc.internal.pageSize.getWidth(), 30, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.text("Lista de Empleados", doc.internal.pageSize.getWidth() / 2, 18, { align: "center" });
+
+    const columnas = ["ID", "Nombre", "Apellido", "Teléfono", "Email", "Cargo"];
+    const filas = EmpleadosFiltrados.map((e) => [e.ID_Empleado, e.Nombre, e.Apellido, e.Contacto || e.Telefono || "", e.Email, e.Cargo]);
+
+    const totalPaginas = "{total_pages_count_string}";
+
+    autoTable(doc, { head: [columnas], body: filas, startY: 40, theme: "grid", styles: { fontSize: 9 } , didDrawPage: function(){
+      const alturaPagina = doc.internal.pageSize.getHeight();
+      const anchoPagina = doc.internal.pageSize.getWidth();
+      const numeroPagina = doc.internal.getNumberOfPages();
+      doc.setFontSize(10);
+      doc.setTextColor(0,0,0);
+      const piePagina = "Página " + numeroPagina + " de " + totalPaginas;
+      doc.text(piePagina, anchoPagina/2, alturaPagina - 10, { align: "center" });
+    }});
+
+    if (typeof doc.putTotalPages === "function") doc.putTotalPages(totalPaginas);
+    const fecha = new Date();
+    const nombreArchivo = `empleados_${String(fecha.getDate()).padStart(2, "0")}${String(fecha.getMonth()+1).padStart(2,"0")}${fecha.getFullYear()}.pdf`;
+    doc.save(nombreArchivo);
+  };
 
 export default Empleados;

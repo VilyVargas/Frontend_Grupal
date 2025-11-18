@@ -96,13 +96,6 @@ return (
               {mostrarMenu ? <i className="bi-box-fill me-2"> </i> : null}  Empleados
             </Nav.Link>
 
-            <Nav.Link 
-              className={mostrarMenu ? "color-favorito" : "text-white"}
-              onClick={() => manejarNavegacion("/catalogo")}
-            >
-              {mostrarMenu ? <i className="bi-images me-2"> </i> : null} Catalogo
-            </Nav.Link>
-
           </Nav>
         </Offcanvas.Body>
       </Navbar.Offcanvas>

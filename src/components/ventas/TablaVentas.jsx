@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { Table, Button, Pagination, Spinner } from "react-bootstrap";
+import { Table, Button, Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
 import ModalRegistroVentas from "../ventas/ModalRegistroVentas";
 import ModalEdicionVentas from "../ventas/ModalEdicionVentas";
 import ModalEliminacionVentas from "../ventas/ModalEliminacionVentas";
+import BotonOrden from "../ordenamiento/BotonOrden";
+import Paginacion from "../ordenamiento/Paginacion";
 
 const TablaVentas = ({
   ventas = [],
@@ -14,6 +16,7 @@ const TablaVentas = ({
 }) => {
   const [paginaActual, setPaginaActual] = useState(1);
   const [listaVentas, setListaVentas] = useState([]);
+  const [orden, setOrden] = useState({ campo: null, direccion: "asc" });
 
   // Cargar ventas iniciales
   useEffect(() => {
@@ -23,9 +26,33 @@ const TablaVentas = ({
   const elementosPorPagina = 5;
   const totalPaginas = Math.ceil(listaVentas.length / elementosPorPagina);
 
+  const ordenarLista = (lista) => {
+    if (!orden.campo) return lista;
+    return [...lista].sort((a, b) => {
+      const va = a[orden.campo];
+      const vb = b[orden.campo];
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      if (!isNaN(Number(va)) && !isNaN(Number(vb))) {
+        return (Number(va) - Number(vb)) * (orden.direccion === "asc" ? 1 : -1);
+      }
+      const sa = String(va).toLowerCase();
+      const sb = String(vb).toLowerCase();
+      if (sa < sb) return orden.direccion === "asc" ? -1 : 1;
+      if (sa > sb) return orden.direccion === "asc" ? 1 : -1;
+      return 0;
+    });
+  };
+
+  const listaOrdenada = ordenarLista(listaVentas);
   const inicio = (paginaActual - 1) * elementosPorPagina;
   const fin = inicio + elementosPorPagina;
-  const ventasVisibles = listaVentas.slice(inicio, fin);
+  const ventasVisibles = listaOrdenada.slice(inicio, fin);
+
+  const manejarOrden = (campo) => {
+    setPaginaActual(1);
+    setOrden((prev) => (prev.campo === campo ? { ...prev, direccion: prev.direccion === "asc" ? "desc" : "asc" } : { campo, direccion: "asc" }));
+  };
 
   const cambiarPagina = (numero) => {
     if (numero >= 1 && numero <= totalPaginas) {
@@ -58,11 +85,11 @@ const TablaVentas = ({
       <Table striped bordered hover size="sm" responsive className="text-center">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Fecha</th>
+            <BotonOrden campo="ID_Venta" orden={orden} manejarOrden={manejarOrden}>ID</BotonOrden>
+            <BotonOrden campo="Fecha_Venta" orden={orden} manejarOrden={manejarOrden}>Fecha</BotonOrden>
             <th>ID Cliente</th>
             <th>ID Empleado</th>
-            <th>Total</th>
+            <BotonOrden campo="Total_Venta" orden={orden} manejarOrden={manejarOrden}>Total</BotonOrden>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -103,40 +130,12 @@ const TablaVentas = ({
         </tbody>
       </Table>
 
-      {/* Paginación */}
-      {totalPaginas > 1 && (
-        <Pagination className="justify-content-center mt-3">
-          <Pagination.First
-            onClick={() => cambiarPagina(1)}
-            disabled={paginaActual === 1}
-          />
-
-          <Pagination.Prev
-            onClick={() => cambiarPagina(paginaActual - 1)}
-            disabled={paginaActual === 1}
-          />
-
-          {[...Array(totalPaginas)].map((_, i) => (
-            <Pagination.Item
-              key={i + 1}
-              active={paginaActual === i + 1}
-              onClick={() => cambiarPagina(i + 1)}
-            >
-              {i + 1}
-            </Pagination.Item>
-          ))}
-
-          <Pagination.Next
-            onClick={() => cambiarPagina(paginaActual + 1)}
-            disabled={paginaActual === totalPaginas}
-          />
-
-          <Pagination.Last
-            onClick={() => cambiarPagina(totalPaginas)}
-            disabled={paginaActual === totalPaginas}
-          />
-        </Pagination>
-      )}
+      <Paginacion
+        elementosPorPagina={elementosPorPagina}
+        totalElementos={listaVentas.length}
+        paginaActual={paginaActual}
+        establecerPaginaActual={setPaginaActual}
+      />
     </div>
   );
 };

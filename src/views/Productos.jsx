@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import TablaProductos from "../components/productos/TablaProductos";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 import ModalRegistroProductos from "../components/productos/ModalRegistroProductos";
 import ModalEdicionProductos from "../components/productos/ModalEdicionProductos";
 import ModalEliminacionProductos from "../components/productos/ModalEliminacionProductos";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
@@ -148,6 +150,71 @@ const Productos = () => {
     }
   };
 
+  const generarPDFProductos = () => {
+    const doc = new jsPDF();
+
+    // Encabezado
+    doc.setFillColor(28, 41, 51);
+    doc.rect(0, 0, doc.internal.pageSize.getWidth(), 30, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.text("Lista de Productos", doc.internal.pageSize.getWidth() / 2, 18, { align: "center" });
+
+    const columnas = [
+      "ID",
+      "Nombre",
+      "Descripción",
+      "Cantidad",
+      "Disponible",
+      "Precio compra",
+      "Precio venta",
+    ];
+
+    const filas = productosFiltrados.map((producto) => [
+      producto.ID_Producto,
+      producto.Nombre_P,
+      producto.Descripcion || "",
+      producto.Cantidad ?? "",
+      producto.Disponible === true ? "Sí" : producto.Disponible === false ? "No" : "",
+      producto.PrecioCompra != null ? `$${producto.PrecioCompra}` : "",
+      producto.PrecioVenta != null ? `$${producto.PrecioVenta}` : "",
+    ]);
+
+    const totalPaginas = "{total_pages_count_string}";
+
+    autoTable(doc, {
+      head: [columnas],
+      body: filas,
+      startY: 40,
+      theme: "grid",
+      styles: { fontSize: 9, cellPadding: 2 },
+      margin: { top: 14, left: 10, right: 10 },
+      tableWidth: "auto",
+      didDrawPage: function (data) {
+        const alturaPagina = doc.internal.pageSize.getHeight();
+        const anchoPagina = doc.internal.pageSize.getWidth();
+        const numeroPagina = doc.internal.getNumberOfPages();
+
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        const piePagina = "Página " + numeroPagina + " de " + totalPaginas;
+        doc.text(piePagina, anchoPagina / 2, alturaPagina - 10, { align: "center" });
+      },
+    });
+
+    if (typeof doc.putTotalPages === "function") {
+      doc.putTotalPages(totalPaginas);
+    }
+
+    const fecha = new Date();
+    const dia = String(fecha.getDate()).padStart(2, "0");
+    const mes = String(fecha.getMonth() + 1).padStart(2, "0");
+    const anio = fecha.getFullYear();
+    const nombreArchivo = `productos_${dia}${mes}${anio}.pdf`;
+
+    doc.save(nombreArchivo);
+  };
+
   return (
     <Container className="mt-4">
       <h4>Productos</h4>
@@ -158,6 +225,11 @@ const Productos = () => {
             textoBusqueda={textoBusqueda}
             manejarCambioBusqueda={manejarCambioBusqueda}
           />
+        </Col>
+        <Col className="d-flex align-items-center">
+          <Button variant="outline-primary" onClick={generarPDFProductos}>
+            Exportar PDF
+          </Button>
         </Col>
       </Row>
 
