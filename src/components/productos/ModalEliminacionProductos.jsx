@@ -15,7 +15,7 @@ const ModalEliminacionProductos = ({
       <Modal.Body>
         <p>
           ¿Estás seguro de que deseas eliminar el producto{" "}
-          <strong>{productoSeleccionado?.Nombre}</strong>?
+          <strong>{productoSeleccionado?.Nombre_P}</strong>?
         </p>
         <p className="text-muted mb-0">Esta acción no se puede deshacer.</p>
       </Modal.Body>

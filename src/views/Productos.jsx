@@ -18,15 +18,21 @@ const Productos = () => {
 
   const [productoSeleccionado, setProductoSeleccionado] = useState({
     ID_Producto: "",
-    Nombre: "",
-    Precio: "",
-    Cantidad: "",
+    Nombre_P: "",
+    Descripcion: "",
+    Cantidad: 0,
+    Disponible: true,
+    PrecioCompra: 0,
+    PrecioVenta: 0,
   });
 
   const [nuevoProducto, setNuevoProducto] = useState({
-    Nombre: "",
-    Precio: "",
-    Cantidad: "",
+    Nombre_P: "",
+    Descripcion: "",
+    Cantidad: 0,
+    Disponible: true,
+    PrecioCompra: 0,
+    PrecioVenta: 0,
   });
 
   // Obtener productos
@@ -52,11 +58,12 @@ const Productos = () => {
     const texto = e.target.value.toLowerCase();
     setTextoBusqueda(texto);
 
-    const filtrados = productos.filter(
-      (prd) =>
-        prd.Nombre?.toLowerCase().includes(texto) ||
-        prd.Precio?.toString().includes(texto) ||
-        prd.Cantidad?.toString().includes(texto)
+    const filtrados = productos.filter((prd) =>
+      prd.Nombre_P?.toLowerCase().includes(texto) ||
+      prd.Descripcion?.toLowerCase().includes(texto) ||
+      prd.PrecioCompra?.toString().includes(texto) ||
+      prd.PrecioVenta?.toString().includes(texto) ||
+      prd.Cantidad?.toString().includes(texto)
     );
 
     setProductosFiltrados(filtrados);
@@ -66,7 +73,12 @@ const Productos = () => {
 
   const manejarCambioInput = (e) => {
     const { name, value } = e.target;
-    setNuevoProducto({ ...nuevoProducto, [name]: value });
+    // Convert select boolean strings to actual booleans
+    if (name === "Disponible") {
+      setNuevoProducto({ ...nuevoProducto, [name]: value === "true" });
+    } else {
+      setNuevoProducto({ ...nuevoProducto, [name]: value });
+    }
   };
 
   const registrarProducto = async () => {
@@ -78,7 +90,7 @@ const Productos = () => {
       });
       if (!res.ok) throw new Error("Error al registrar producto");
       setMostrarModalAgregar(false);
-      setNuevoProducto({ Nombre: "", Precio: "", Cantidad: "" });
+      setNuevoProducto({ Nombre_P: "", Descripcion: "", Cantidad: 0, Disponible: true, PrecioCompra: 0, PrecioVenta: 0 });
       obtenerProductos();
     } catch (error) {
       console.error("Error:", error.message);
@@ -92,7 +104,11 @@ const Productos = () => {
 
   const manejarCambioEditar = (e) => {
     const { name, value } = e.target;
-    setProductoSeleccionado({ ...productoSeleccionado, [name]: value });
+    if (name === "Disponible") {
+      setProductoSeleccionado({ ...productoSeleccionado, [name]: value === "true" });
+    } else {
+      setProductoSeleccionado({ ...productoSeleccionado, [name]: value });
+    }
   };
 
   const guardarCambiosProducto = async () => {

@@ -19,8 +19,8 @@ const ModalEdicionProductos = ({
             <Form.Label>Nombre</Form.Label>
             <Form.Control
               type="text"
-              name="Nombre"
-              value={productoSeleccionado?.Nombre || ""}
+              name="Nombre_P"
+              value={productoSeleccionado?.Nombre_P || ""}
               onChange={manejarCambioInput}
             />
           </Form.Group>
@@ -29,8 +29,8 @@ const ModalEdicionProductos = ({
             <Form.Label>Precio</Form.Label>
             <Form.Control
               type="number"
-              name="Precio"
-              value={productoSeleccionado?.Precio || ""}
+              name="PrecioCompra"
+              value={productoSeleccionado?.PrecioCompra || ""}
               onChange={manejarCambioInput}
             />
           </Form.Group>
@@ -43,6 +43,38 @@ const ModalEdicionProductos = ({
               value={productoSeleccionado?.Cantidad || ""}
               onChange={manejarCambioInput}
             />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Precio venta</Form.Label>
+            <Form.Control
+              type="number"
+              name="PrecioVenta"
+              value={productoSeleccionado?.PrecioVenta || ""}
+              onChange={manejarCambioInput}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Descripción</Form.Label>
+            <Form.Control
+              type="text"
+              name="Descripcion"
+              value={productoSeleccionado?.Descripcion || ""}
+              onChange={manejarCambioInput}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Disponible</Form.Label>
+            <Form.Select
+              name="Disponible"
+              value={productoSeleccionado?.Disponible ?? ""}
+              onChange={manejarCambioInput}
+            >
+              <option value="">Seleccione</option>
+              <option value={true}>Sí</option>
+              <option value={false}>No</option>
+            </Form.Select>
           </Form.Group>
         </Form>
       </Modal.Body>

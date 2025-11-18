@@ -72,10 +72,10 @@ const TablaVentas = ({
             ventasVisibles.map((vta) => (
               <tr key={vta.ID_Venta}>
                 <td>{vta.ID_Venta}</td>
-                <td>{vta.Fecha}</td>
+                <td>{vta.Fecha_Venta}</td>
                 <td>{vta.ID_Cliente}</td>
                 <td>{vta.ID_Empleado}</td>
-                <td>{vta.Total}</td>
+                <td>{vta.Total_Venta}</td>
                 <td>
                   <Button
                     variant="warning"

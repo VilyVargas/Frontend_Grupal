@@ -49,8 +49,11 @@ const TablaProductos = ({
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Precio</th>
+            <th>Descripción</th>
             <th>Cantidad</th>
+            <th>Disponible</th>
+            <th>Precio compra</th>
+            <th>Precio venta</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -60,9 +63,12 @@ const TablaProductos = ({
             productosVisibles.map((prd) => (
               <tr key={prd.ID_Producto}>
                 <td>{prd.ID_Producto}</td>
-                <td>{prd.Nombre}</td>
-                <td>{prd.Precio}</td>
+                <td>{prd.Nombre_P}</td>
+                <td>{prd.Descripcion}</td>
                 <td>{prd.Cantidad}</td>
+                <td>{prd.Disponible}</td>
+                <td>{prd.PrecioCompra}</td>
+                <td>{prd.PrecioVenta}</td>
                 <td>
                   <Button
                     variant="warning"
